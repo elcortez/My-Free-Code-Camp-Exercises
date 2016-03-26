@@ -7,3 +7,5 @@ function mutation(arr) {
   }  
   return true; 
 }
+
+/* it works because the "return true" is casted OUTSIDE the for loop */
