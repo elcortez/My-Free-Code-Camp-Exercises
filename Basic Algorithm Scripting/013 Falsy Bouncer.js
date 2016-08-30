@@ -10,4 +10,4 @@ function bouncer(arr) {
 bouncer([1, null, NaN, 2, undefined]);
 
 
-/* And all that just because every "falsy" value... just doesn't exist. */
+/* And all that just because very "falsy" value... just doesn't exist. */
