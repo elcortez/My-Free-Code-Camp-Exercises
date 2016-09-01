@@ -1,9 +1,9 @@
 function getIndexToIns(arr, num) {
-  // Find my place in this sorted array.
-  return num;
+  arr.push(num);
+  return arr.sort(function(a, b) {
+    return a - b;
+  }).indexOf(num);
 }
-
-getIndexToIns([40, 60], 50);
 
 
 // Return the lowest index at which a value (second argument) should be inserted
@@ -16,28 +16,3 @@ getIndexToIns([40, 60], 50);
 // Likewise, getIndexToIns([20,3,5], 19) should return 2 because once
 // the array has been sorted it will look like [3,5,20]
 // and 19 is less than 20 (index 2) and greater than 5 (index 1).
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// function getIndexToIns(arr, num) {
-// arr.push(num);
-// var sortedarr = arr.sort(function(a,b){return a-b;});
-// var wheresarr = sortedarr.indexOf(num);
-// return wheresarr;
-// }
-
-// getIndexToIns([3, 10, 5], 3);
