@@ -1,12 +1,18 @@
 $(document).ready(function() {
   $('#getWeather').on('click', function() {
-    myLatAndLon(function(result) {
-      var lat = result[0];
-      var lon = result[1];
-      console.log(JSON.stringify(result));
-      $req = myWeather(lat, lon);
-      $req.done(function(R) {
-        console.log(JSON.stringify(R))
+    myLatAndLon(function(GeolocationResult) {
+      var lat = GeolocationResult[0];
+      var lon = GeolocationResult[1];
+      // console.log(JSON.stringify(GeolocationResult));
+      myWeather(lat, lon).done(function(weatherResult) {
+        $('#weather').html(JSON.stringify(weatherResult['weather'][0]['description']))
+        console.log(JSON.stringify(weatherResult));
+        if(weatherResult['weather'][0]['main'] === 'Clouds'){
+          $('#icon').html('Many clouds today !')
+        }
+        else {
+          $('#icon').html('No clouds today !')
+        }
       });
     });
   })
