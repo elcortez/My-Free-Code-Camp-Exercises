@@ -13,29 +13,35 @@ function smallestCommons(arr) {
   var counter = myArr[0];
   var foundIt = false;
 
-  for(i = counter; i < myArr[-1]; i++){
-    while(foundIt == false) {
-      checkingIt = checkingDivision(counter, myArr[i]);
-      if(checkingIt == true){
-        break;
+  while(foundIt == false){
+    if(checkingDivision(counter, myArr[0])){
+      if(checkingAllArray(myArr, counter)){
+        foundIt = true;
+        return counter;
       } else {
         counter += 1;
+        continue;
       }
+    } else {
+      counter += 1;
+      continue;
     }
   }
 }
-
 
 function checkingDivision(counter, divider) {
   return (counter % divider) == 0
 }
 
-function removeElement(array, element) {
-  var i = array.indexOf(element);
-  if(i != -1) {
-  	array.splice(i, 1);
+function checkingAllArray(array, counter) {
+  var check = true;
+
+  for (i = 0; i < array.length; i++) {
+    if(!checkingDivision(counter, array[i])) {
+      check = false;
+    }
   }
-  return array;
+  return check;
 }
 
 function arrMaker(arr) {
@@ -53,8 +59,7 @@ function arrMaker(arr) {
   }
   return finalArr;
 }
-
 console.log(smallestCommons([1, 5])); // should return 60.
-// console.log(smallestCommons([5, 1])); // should return 60.
-// console.log(smallestCommons([1, 13])); // should return 360360.
-// console.log(smallestCommons([23, 18])); // should return 6056820.
+console.log(smallestCommons([5, 1])); // should return 60.
+console.log(smallestCommons([1, 13])); // should return 360360.
+console.log(smallestCommons([23, 18])); // should return 6056820.
