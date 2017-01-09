@@ -1,18 +1,20 @@
 function steamrollArray(arr) {
-  var final_arr = []
+  var finalArr = [];
 
-  for (i=0 ; i < arr.length; i ++) {
-    if(Array.isArray(arr[i])) {
+  function recursor(element) {
+    if (Array.isArray(element)) {
+      for (var i in element) {
+        recursor(element[i]);
+      }
     } else {
-      console.log('not an array ' + arr[i])
-      final_arr.push(arr[i])
+      finalArr.push(element);
     }
   }
-  return final_arr;
-}
 
-console.log(steamrollArray([1, [2], [3, [[4]]]])) //
-// console.log(steamrollArray([[["a"]], [["b"]]])) // should return ["a", "b"].
-// console.log(steamrollArray([1, [2], [3, [[4]]]])) // should return [1, 2, 3, 4].
-// console.log(steamrollArray([1, [], [3, [[4]]]])) // should return [1, 3, 4].
-// console.log(steamrollArray([1, {}, [3, [[4]]]])) // should return [1, {}, 3, 4].
+  arr.forEach(recursor);
+  return finalArr;
+}
+console.log(steamrollArray([[["a"]], [["b"]]])) // should return ["a", "b"].
+console.log(steamrollArray([1, [2], [3, [[4]]]])) // should return [1, 2, 3, 4].
+console.log(steamrollArray([1, [], [3, [[4]]]])) // should return [1, 3, 4].
+console.log(steamrollArray([1, {}, [3, [[4]]]])) // should return [1, {}, 3, 4].
