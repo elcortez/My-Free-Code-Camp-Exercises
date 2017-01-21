@@ -5,12 +5,22 @@
 // var sumTwoAnd = addTogether(2);
 // sumTwoAnd(3) returns 5.
 
-
 function addTogether() {
+
+  soloArgument = arguments['0'];
+
+  function myClosure(secondArgument) {
+    if(typeof secondArgument != 'number') {
+      return undefined;
+    } else {
+      return soloArgument + secondArgument;
+    }
+  }
+
   var argumentsLength = Object.keys(arguments).length;
-  var counter = 0;
 
   if(argumentsLength > 1) {
+    var counter = 0;
     for(i = 0; i < argumentsLength; i ++) {
       currentArgument = arguments[i.toString()]
       if(typeof currentArgument != 'number') {
@@ -23,18 +33,16 @@ function addTogether() {
     if(typeof soloArgument != 'number') {
       return undefined
     } else {
-      return soloArgument;
+      return myClosure;
     }
   }
-  console.log('--------------------');
   return counter;
-
 }
 
 
 
-// console.log(addTogether(2, 3)) // should return 5.
-// console.log(addTogether(2, "3")) // should return undefined.
-// console.log(addTogether("http://bit.ly/IqT6zt")) // should return undefined.
-// console.log(addTogether(2)(3)) // should return 5.
+console.log(addTogether(2, 3)) // should return 5.
+console.log(addTogether(2, "3")) // should return undefined.
+console.log(addTogether("http://bit.ly/IqT6zt")) // should return undefined.
+console.log(addTogether(2)(3)) // should return 5.
 console.log(addTogether(2)([3])) // should return undefined.
