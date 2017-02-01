@@ -6,33 +6,62 @@
 // Otherwise, return change in coin and bills, sorted in highest to lowest order.
 
 function checkCashRegister(price, cash, cid) {
-  var coinValues = {
-    'PENNY': 0.01,
-    'NICKEL': 0.05,
-    'DIME': 0.1,
-    'QUARTER': 0.25,
-    'ONE': 1,
-    'FIVE': 5,
-    'TEN': 10,
-    'TWENTY': 20,
-    'ONE HUNDRED': 100
+  var myCashier = {
+    'ONE HUNDRED': { 'value': 100, 'amount': 0 },
+    'TWENTY': { 'value': 20, 'amount': 0 },
+    'TEN': { 'value': 10, 'amount': 0 },
+    'FIVE': { 'value': 5, 'amount': 0 },
+    'ONE': { 'value': 1, 'amount': 0 },
+    'QUARTER': { 'value': 0.25, 'amount': 0 },
+    'DIME': { 'value': 0.1, 'amount': 0 },
+    'NICKEL': { 'value': 0.05, 'amount': 0 },
+    'PENNY': { 'value': 0.01, 'amount': 0 }
   }
 
   moneyToGiveBack = cash - price;
 
   totalMoneyInCashRegister = 0;
+
   cid.forEach(function(drawer){
     totalMoneyInCashRegister += drawer[1]
+    myCashier[drawer[0]]['amount'] += parseFloat((drawer[1] / myCashier[drawer[0]]['value']).toFixed(2))
   })
 
   if(totalMoneyInCashRegister === moneyToGiveBack) {
     return 'Closed'
   } else if(totalMoneyInCashRegister < moneyToGiveBack) {
     return 'Insufficient Funds'
-  } else {
-    return coinValues
   }
+
+  console.log(myCashier)
+
+  Object.keys(myCashier).forEach(function(drawer){
+    console.log('calculating ' + moneyToGiveBack + ' % ' + myCashier[drawer]['value'] + ' with ' + myCashier[drawer]['amount'] + ' coins')
+    console.log((drawerCalculator(moneyToGiveBack, myCashier[drawer]['value'], myCashier[drawer]['amount'])))
+    moneyToGiveBack = (drawerCalculator(moneyToGiveBack, myCashier[drawer]['value'], myCashier[drawer]['amount']))
+    console.log('moneyToGiveBack ==> ' + moneyToGiveBack)
+    console.log('------------------')
+  })
+
+  function drawerCalculator(moneyToGiveBack, coinValue, coinsAmount) {
+    console.log('moneyToGiveBack is ' + moneyToGiveBack)
+    console.log((moneyToGiveBack - coinValue) >= 0)
+    console.log(coinsAmount > 0)
+
+    if((moneyToGiveBack - coinValue) >= 0 && (coinsAmount > 0)) {
+      console.log('substracting ' + coinValue + ' from ' + moneyToGiveBack)
+      console.log('moneyToGiveBack is now ' + (moneyToGiveBack - coinValue))
+      drawerCalculator((moneyToGiveBack - coinValue), coinValue, coinsAmount - 1)
+
+    } else {
+      console.log('******************')
+      console.log('returning ' + moneyToGiveBack)
+      return moneyToGiveBack;
+    }
+  }
+
 }
+
 
 
 console.log(checkCashRegister(19.50, 20.00, [["PENNY", 1.01], ["NICKEL", 2.05], ["DIME", 3.10], ["QUARTER", 4.25], ["ONE", 90.00], ["FIVE", 55.00], ["TEN", 20.00], ["TWENTY", 60.00], ["ONE HUNDRED", 100.00]])) // should return [["QUARTER", 0.50]].
