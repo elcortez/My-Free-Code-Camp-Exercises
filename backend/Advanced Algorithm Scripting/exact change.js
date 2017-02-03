@@ -33,42 +33,69 @@ function checkCashRegister(price, cash, cid) {
     return 'Insufficient Funds'
   }
 
+  var returning = []
+
   console.log(myCashier)
 
   Object.keys(myCashier).forEach(function(drawer){
+    console.log('---------------------------------------------------------------- BEGINNING CALCULATION')
     console.log('calculating ' + moneyToGiveBack + ' % ' + myCashier[drawer]['value'] + ' with ' + myCashier[drawer]['amount'] + ' coins')
-    console.log((drawerCalculator(moneyToGiveBack, myCashier[drawer]['value'], myCashier[drawer]['amount'])))
-    moneyToGiveBack = (drawerCalculator(moneyToGiveBack, myCashier[drawer]['value'], myCashier[drawer]['amount']))
+    moneyToGiveBack = (drawerCalculator(moneyToGiveBack, myCashier[drawer]['value'], myCashier[drawer]['amount'], drawer))
     console.log('moneyToGiveBack ==> ' + moneyToGiveBack)
-    console.log('------------------')
+    console.log(myCashier)
+    console.log('----------------------------------------------------------------- ENDING CALCULATION')
   })
 
-  function drawerCalculator(moneyToGiveBack, coinValue, coinsAmount) {
-    console.log('moneyToGiveBack is ' + moneyToGiveBack)
-    console.log((moneyToGiveBack - coinValue) >= 0)
-    console.log(coinsAmount > 0)
+  function drawerCalculator(moneyToGiveBack, coinValue, coinsAmount, drawer) {
+    moneyToGiveBack = parseFloat(moneyToGiveBack.toFixed(2))
 
-    if((moneyToGiveBack - coinValue) >= 0 && (coinsAmount > 0)) {
+    console.log('moneyToGiveBack is ' + moneyToGiveBack)
+
+    if((moneyToGiveBack >= coinValue) && (coinsAmount > 0)) {
       console.log('substracting ' + coinValue + ' from ' + moneyToGiveBack)
       console.log('moneyToGiveBack is now ' + (moneyToGiveBack - coinValue))
-      drawerCalculator((moneyToGiveBack - coinValue), coinValue, coinsAmount - 1)
+
+      console.log('removing one coin of ' + myCashier[drawer]['value'] + ' which was ' + myCashier[drawer]['amount'])
+      myCashier[drawer]['amount'] -= 1
+      console.log(myCashier[drawer]['value'] + ' is now ' + myCashier[drawer]['amount'])
+
+      var alreadyReturnedOne = false
+
+      returning.forEach(function(coinsBack){
+        if(coinsBack[0] == drawer){
+          alreadyReturnedOne = true
+          coinsBack[1] += coinValue
+        }
+      })
+
+      if(alreadyReturnedOne == false) {
+        returning.push([drawer, coinValue])
+      }
+      console.log('returning is ' + returning)
+      return drawerCalculator((moneyToGiveBack - coinValue), coinValue, coinsAmount - 1, drawer)
 
     } else {
-      console.log('******************')
-      console.log('returning ' + moneyToGiveBack)
       return moneyToGiveBack;
     }
   }
 
+  console.log('NOW RETURNING ' + returning)
+  console.log('still money to give back : ' + moneyToGiveBack)
+
+  if(moneyToGiveBack == 0) {
+    return returning
+  } else {
+    return 'Insufficient Funds'
+  }
 }
 
+console.log(checkCashRegister(3.26, 100.00, [["PENNY", 1.01], ["NICKEL", 2.05], ["DIME", 3.10], ["QUARTER", 4.25], ["ONE", 90.00], ["FIVE", 55.00], ["TEN", 20.00], ["TWENTY", 60.00], ["ONE HUNDRED", 100.00]]))
+// should return [["TWENTY", 60.00], ["TEN", 20.00], ["FIVE", 15.00], ["ONE", 1.00], ["QUARTER", 0.50], ["DIME", 0.20], ["PENNY", 0.04]].
 
-
-console.log(checkCashRegister(19.50, 20.00, [["PENNY", 1.01], ["NICKEL", 2.05], ["DIME", 3.10], ["QUARTER", 4.25], ["ONE", 90.00], ["FIVE", 55.00], ["TEN", 20.00], ["TWENTY", 60.00], ["ONE HUNDRED", 100.00]])) // should return [["QUARTER", 0.50]].
+// console.log(checkCashRegister(19.50, 20.00, [["PENNY", 0.01], ["NICKEL", 0], ["DIME", 0], ["QUARTER", 0], ["ONE", 1.00], ["FIVE", 0], ["TEN", 0], ["TWENTY", 0], ["ONE HUNDRED", 0]])) // should return "Insufficient Funds".
+// console.log(checkCashRegister(19.50, 20.00, [["PENNY", 1.01], ["NICKEL", 2.05], ["DIME", 3.10], ["QUARTER", 4.25], ["ONE", 90.00], ["FIVE", 55.00], ["TEN", 20.00], ["TWENTY", 60.00], ["ONE HUNDRED", 100.00]])) // should return [["QUARTER", 0.50]].
 // console.log(checkCashRegister(19.50, 20.00, [["PENNY", 1.01], ["NICKEL", 2.05], ["DIME", 3.10], ["QUARTER", 4.25], ["ONE", 90.00], ["FIVE", 55.00], ["TEN", 20.00], ["TWENTY", 60.00], ["ONE HUNDRED", 100.00]])) // should return an array.
 // console.log(checkCashRegister(19.50, 20.00, [["PENNY", 0.01], ["NICKEL", 0], ["DIME", 0], ["QUARTER", 0], ["ONE", 0], ["FIVE", 0], ["TEN", 0], ["TWENTY", 0], ["ONE HUNDRED", 0]])) // should return a string.
 // console.log(checkCashRegister(19.50, 20.00, [["PENNY", 0.50], ["NICKEL", 0], ["DIME", 0], ["QUARTER", 0], ["ONE", 0], ["FIVE", 0], ["TEN", 0], ["TWENTY", 0], ["ONE HUNDRED", 0]])) // should return a string.
-// console.log(checkCashRegister(3.26, 100.00, [["PENNY", 1.01], ["NICKEL", 2.05], ["DIME", 3.10], ["QUARTER", 4.25], ["ONE", 90.00], ["FIVE", 55.00], ["TEN", 20.00], ["TWENTY", 60.00], ["ONE HUNDRED", 100.00]])) // should return [["TWENTY", 60.00], ["TEN", 20.00], ["FIVE", 15.00], ["ONE", 1.00], ["QUARTER", 0.50], ["DIME", 0.20], ["PENNY", 0.04]].
 // console.log(checkCashRegister(19.50, 20.00, [["PENNY", 0.01], ["NICKEL", 0], ["DIME", 0], ["QUARTER", 0], ["ONE", 0], ["FIVE", 0], ["TEN", 0], ["TWENTY", 0], ["ONE HUNDRED", 0]])) // should return "Insufficient Funds".
-// console.log(checkCashRegister(19.50, 20.00, [["PENNY", 0.01], ["NICKEL", 0], ["DIME", 0], ["QUARTER", 0], ["ONE", 1.00], ["FIVE", 0], ["TEN", 0], ["TWENTY", 0], ["ONE HUNDRED", 0]])) // should return "Insufficient Funds".
 // console.log(checkCashRegister(19.50, 20.00, [["PENNY", 0.50], ["NICKEL", 0], ["DIME", 0], ["QUARTER", 0], ["ONE", 0], ["FIVE", 0], ["TEN", 0], ["TWENTY", 0], ["ONE HUNDRED", 0]])) // should return "Closed".
