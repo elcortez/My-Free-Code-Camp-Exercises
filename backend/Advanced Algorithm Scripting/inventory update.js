@@ -11,44 +11,40 @@ function updateInventory(arr1, arr2) {
   }
 
   arr2.forEach(function(element2){
-    console.log('--------------------------------')
-    console.log('checking if ' + element2[1] + ' is present in first array ' + arr1)
-    var present = false
+    var present = false;
 
     arr1.forEach(function(element1){
-      console.log('checking if ' + element1[1] + ' is the same as ' + element2[1])
-
       if(element1[1] == element2[1]) {
-        present = true
-
-        console.log('FOUND EQUALITY !!!')
-        console.log('currently' + element1[1] + 'is equal to ' + element1[0])
-        console.log('adding ' + element2 + ' to ' + element1)
+        present = true;
         element1[0] += element2[0]
+      }
+    })
 
-        console.log(element1[1] + ' is now equal to ' + element1[0])
-        console.log('arr is now equal to ' + arr1)
+    if(present == false) {
+      for(var i of arr1) {
+        if(i[1] > element2[1]) {
+          present = true;
+          arr1.splice(arr1.indexOf(i), 0, element2);
+          break
+        }
       }
 
-    })
-    console.log('was ' + element2[1] + 'present in the array ? ' + present)
-    if(present == false) {
-      console.log('Not present ! Adding it...')
-      arr1.push(element2)
-      console.log('array is now equal to ' + arr1)
-    } else {
-      console.log('ok, it was there')
+    }
+
+    if(present == false){
+      arr1.push(element2);
     }
   })
-
-  arr1.sort(function(a, b){return a[1]-b[1]});
 
   return arr1
 }
 
 
-console.log(updateInventory([[21, "Bowling Ball"], [2, "Dirty Sock"], [1, "Hair Pin"], [5, "Microphone"]],
-[[2, "Hair Pin"], [3, "Half-Eaten Apple"], [67, "Bowling Ball"], [7, "Toothpaste"]]))
+console.log(updateInventory([], [[2, "Hair Pin"], [3, "Half-Eaten Apple"], [67, "Bowling Ball"], [7, "Toothpaste"]]))
+  // should return [[67, "Bowling Ball"], [2, "Hair Pin"], [3, "Half-Eaten Apple"], [7, "Toothpaste"]].
+
+// console.log(updateInventory([[21, "Bowling Ball"], [2, "Dirty Sock"], [1, "Hair Pin"], [5, "Microphone"]],
+// [[2, "Hair Pin"], [3, "Half-Eaten Apple"], [67, "Bowling Ball"], [7, "Toothpaste"]]))
 // should return [[88, "Bowling Ball"], [2, "Dirty Sock"], [3, "Hair Pin"], [3, "Half-Eaten Apple"], [5, "Microphone"], [7, "Toothpaste"]].
 
 // console.log(updateInventory([[0, "Bowling Ball"], [0, "Dirty Sock"], [0, "Hair Pin"], [0, "Microphone"]],
@@ -61,6 +57,3 @@ console.log(updateInventory([[21, "Bowling Ball"], [2, "Dirty Sock"], [1, "Hair 
 // console.log(updateInventory([[21, "Bowling Ball"], [2, "Dirty Sock"], [1, "Hair Pin"], [5, "Microphone"]],
 //   [[2, "Hair Pin"], [3, "Half-Eaten Apple"], [67, "Bowling Ball"], [7, "Toothpaste"]]).length)
   // should return an array with a length of 6.
-
-// console.log(updateInventory([], [[2, "Hair Pin"], [3, "Half-Eaten Apple"], [67, "Bowling Ball"], [7, "Toothpaste"]]))
-  // should return [[67, "Bowling Ball"], [2, "Hair Pin"], [3, "Half-Eaten Apple"], [7, "Toothpaste"]].
