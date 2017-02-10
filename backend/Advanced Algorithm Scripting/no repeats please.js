@@ -5,37 +5,10 @@
 // (aab, aab, aba, aba, baa, baa), but only 2 of them (aba and aba) don't have the
 // same letter (in this case a) repeating.
 
+
 function permAlone(str) {
   var permutations = permutateMe(str);
 }
-
-function permutateMe(str){
-  finalArr = []
-
-  var splitted = str.split('')
-
-  for(var i in splitted){
-    console.log('--------------------')
-    console.log('splitting now for element ' + i + ' with a splitted currently at ' + splitted)
-    console.log('adding ' + splitted[i] + ' to the array')
-    splitted.splice(i + 1, 0, splitted[i])
-    console.log('splitted is now ' + splitted)
-
-    console.log('removing ' + splitted[i])
-    splitted.splice(i, 1);
-    console.log('splitted is now ' + splitted)
-    finalArr.push(splitted.join(''))
-    console.log('--------------------')
-  }
-
-
-
-
-  return finalArr;
-}
-
-console.log(permutateMe("ab")) // should return ['ab', 'ba']
-// console.log(permutateMe("abc")) // should return ["abc", "acb", "bac", "bca", "cab", "cba"]
 
 // console.log(permAlone("aab")) // should return a number.
 // console.log(permAlone("aab")) // should return 2.
@@ -47,3 +20,35 @@ console.log(permutateMe("ab")) // should return ['ab', 'ba']
 // console.log(permAlone("a")) // should return 1.
 // console.log(permAlone("aaab")) // should return 0.
 // console.log(permAlone("aaabb")) // should return 12.
+
+var finalArr = [];
+var tempArr = [];
+
+function permute(input) {
+  console.log('------------------- starting method with i = ' + i + ', ch = ' + ch + ', chars = ' + chars + ', finalArr = ' + finalArr + ' and tempArr = ' + tempArr)
+  console.log(' ')
+  var i;
+  var ch;
+  var chars = input.split('');
+
+  for (i = 0; i < chars.length; i++) {
+    console.log('**** starting iteration with i = ' + i + ', ch = ' + ch + ', chars = ' + chars + ', finalArr = ' + finalArr + ' and tempArr = ' + tempArr)
+    ch = chars.splice(i, 1);
+
+    tempArr.push(ch);
+
+    if (chars.length == 0) {
+      finalArr[finalArr.length] = tempArr.join('');
+    }
+
+    permute(chars.join(''));
+    chars.splice(i, 0, ch);
+    tempArr.pop();
+    console.log('......................ending iteration......................................')
+    console.log(' ')
+  }
+  console.log('.......................ending method...........................')
+  return finalArr
+}
+
+console.log(permute("abc")); // should return ["abc", "acb", "bac", "bca", "cab", "cba"]
